@@ -5,8 +5,8 @@ using UnityEngine;
 public class MoveAirplane : MonoBehaviour
 {
     private Rigidbody2D _rb;
-    private float HorizontalMove = 0f;
-    public float speed = 1f;
+    private Vector2 Move;
+    public float speed;
 
     void Start()
     {
@@ -16,11 +16,13 @@ public class MoveAirplane : MonoBehaviour
   
     void Update()
     {
-        HorizontalMove = Input.GetAxisRaw("Horizontal") * speed; 
+       Move.x = Input.GetAxisRaw("Horizontal") * speed;
+        Move.y = Input.GetAxis("Vertical") * speed;
     }
 
     private void FixedUpdate()
     {
-        Vector2 targetVelocity = new Vector2(HorizontalMove * 10,_rb.velocity.y);
+        // _rb.velocity = new Vector2(HorizontalMove * 10,_rb.velocity.y);
+        _rb.MovePosition(_rb.position + Move * speed * Time.fixedDeltaTime);
     }
 }

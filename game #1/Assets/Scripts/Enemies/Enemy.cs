@@ -7,6 +7,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float health;
+    public int damage;
     public float Health { get => health; set => health = value; }
    
 
@@ -26,6 +27,12 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.CompareTag("Player")) {
+
+            health -= 5;
+        }
+
+
         if (collision.CompareTag("Bullet"))
         {
             health -= 5;

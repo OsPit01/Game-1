@@ -8,8 +8,8 @@ public class Bullet : MonoBehaviour
     public float speed;
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private int damage;
-    
-    
+    public GameObject effect;
+
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -21,6 +21,8 @@ public class Bullet : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Instantiate(effect, transform.position, Quaternion.identity);
+
         if(collision.CompareTag("Enemy"))
         {
             collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);

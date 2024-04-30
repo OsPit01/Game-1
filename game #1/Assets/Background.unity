@@ -719,6 +719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 125
+  damage: 20
 --- !u!1 &1111649957
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,6 +900,7 @@ GameObject:
   - component: {fileID: 1464664803}
   - component: {fileID: 1464664801}
   - component: {fileID: 1464664804}
+  - component: {fileID: 1464664805}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1094,6 +1096,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPos: {fileID: 1895519521}
   Bullet: {fileID: 1166825988844253086, guid: 19920e3a424430c42984ab9d3f63f293, type: 3}
+--- !u!114 &1464664805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464664797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9247ddc422d50d4428a75380f1df19ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
 --- !u!1 &1612243746
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,22 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
     public int health;
-    void Start()
+    public int maxHealth;
+    public void TakeHit(int damage)
     {
-        
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
-
-   
-    void Update()
+    public void SetHealth(int bonusHealth)
     {
-        
-    }
-    public void ChangeHealth(int healthValue)
-    {
-        health += healthValue;
+        health += bonusHealth;
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
     }
 }

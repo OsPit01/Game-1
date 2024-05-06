@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed;
+    public float speed = 20f;
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private int damage;
     public GameObject effect;
-
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _rb.velocity = transform.right * speed;
+        
     }
     private void Update()
     {

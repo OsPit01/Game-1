@@ -1,33 +1,43 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics.Contracts;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Sounds
 {
-    private float timeBtwAttack;
-    public float startTimeBtwAttack;
-    public float health;
-    public float speed = 3f;
-    public int damage;
+    [Header("Controls")]
+   // [SerializeField] private float timeBtwAttack;
+   // [SerializeField] private float startTimeBtwAttack;
+    [SerializeField] private float speed = 3f;
+    [SerializeField] private float timeDEstroy = 5f;
 
+    [Header("Health")]
+    [SerializeField] private float health;
+
+    [Header("Damage")]
+    [SerializeField] private int damage;
+
+    [Header("CollisionTag")]
     public string collisionTag;
-
     private bool isCollision;
-
     public bool isDestroyed = false;
 
-    private Rigidbody2D _rb;
+    [Header("Tag")]
+    Transform target;
+
+    [Header("Transform")]
+    public Vector3 spawPos;
+
+    [Header("Effect")]
+    public GameObject effect;
+
     private Material matBlink;
     private Material matDefault;
     private SpriteRenderer spriteRend;
-    Transform target;
-    public GameObject effect;
-
+    private ScoreManager score;
+    private UnityEngine.Object explosion;
+    private UnityEngine.Object enemyRef;
+  
+   
 
 
     public float Health { get => health; set => health = value; }
@@ -35,20 +45,23 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        spawPos = transform.position;
+        enemyRef = Resources.Load("Enemy");
         spriteRend = GetComponent<SpriteRenderer>();
         matBlink = Resources.Load("EnemyBlink", typeof(Material)) as Material;
         matDefault = spriteRend.material;
 
-        _rb = GetComponent<Rigidbody2D>();
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-   
-       
+        score = FindAnyObjectByType<ScoreManager>();
+
+        explosion = Resources.Load("Explosion");
     }
 
     void Update()
     {
+        
+        EnemyFollow();
 
-            EnemyFollow();
         
     }
 
@@ -56,10 +69,13 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag == collisionTag && !isCollision)
         {
+            
             Instantiate(effect, transform.position, Quaternion.identity);
             Player player = collision.gameObject.GetComponent<Player>();
             isCollision = true;
+            PlaySound(sounds[0]);
             player.TakeHit(damage);
+
         }
 
     }
@@ -80,6 +96,7 @@ public class Enemy : MonoBehaviour
             if (health <= 0)
             {
                 KillEnemy();
+                score.Kill();
             }
             else
             {
@@ -100,15 +117,32 @@ public class Enemy : MonoBehaviour
     }
     public void KillEnemy()
     {
+        GameObject explosionRef = (GameObject)Instantiate(explosion);
+        explosionRef.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         isDestroyed = true;
-        Destroy(gameObject);
+        // Destroy(gameObject);
+
+        gameObject.SetActive(false);
+        Invoke("Respawn", timeDEstroy);
     }
   
     public void EnemyFollow()
     {
-  
+        if (target != null)
+        {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.fixedDeltaTime);
-        
+        }
+       
+    }
+    public void ChasePlayer()
+    {
+        throw new NotImplementedException();
+    }
+    void Respawn()
+    {
+        GameObject enemyCopy = (GameObject)Instantiate(enemyRef);
+        enemyCopy.transform.position = new Vector3(Random.Range(spawPos.x - 3, spawPos.x + 3), spawPos.y, spawPos.z);
+        Destroy(gameObject);
     }
 }
 

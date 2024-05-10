@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bullet
   - Enemy
+  - Potion
+  - Weapon
   layers:
   - Default
   - TransparentFX
